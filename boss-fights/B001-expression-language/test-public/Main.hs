@@ -15,9 +15,11 @@ main = defaultMain tests
 tests :: TestTree
 tests = testGroup "B001 public contract"
   [ testCase "parse literal and whitespace" $ parseExpr " 42\n" @?= Right (Lit 42)
+  , testCase "identifier lexical boundaries" $ map isValidIdentifier ["x", "_x2", "let", "in", "2x", ""] @?= [True, True, False, False, False, False]
   , testCase "multiplication precedence" $ parseExpr "1 + 2 * 3" @?= Right (Binary Add (Lit 1) (Binary Multiply (Lit 2) (Lit 3)))
   , testCase "subtraction is left associative" $ parseExpr "10 - 3 - 2" @?= Right (Binary Subtract (Binary Subtract (Lit 10) (Lit 3)) (Lit 2))
   , testCase "unary binds tightly" $ parseExpr "-1 * 2" @?= Right (Binary Multiply (Unary Negate (Lit 1)) (Lit 2))
+  , testCase "let syntax parses" $ parseExpr "let x = 2 in x + 3" @?= Right (Let "x" (Lit 2) (Binary Add (Var "x") (Lit 3)))
   , testCase "let parses and evaluates" $ eval [] (Let "x" (Lit 2) (Binary Add (Var "x") (Lit 3))) @?= Right 5
   , testCase "first environment binding wins" $ eval [("x", 1), ("x", 2)] (Var "x") @?= Right 1
   , testCase "nested let shadows" $ eval [("x", 1)] (Let "x" (Lit 2) (Var "x")) @?= Right 2
@@ -25,7 +27,9 @@ tests = testGroup "B001 public contract"
   , testCase "unknown variable is structural" $ eval [] (Var "missing") @?= Left (UnboundVariable "missing")
   , testCase "reject trailing garbage" $ assertBool "accepted trailing input" (isLeft (parseExpr "1 trailing"))
   , testCase "reject empty input" $ assertBool "accepted empty input" (isLeft (parseExpr " \t"))
+  , testCase "reject missing delimiter" $ assertBool "accepted missing close parenthesis" (isLeft (parseExpr "(1 + 2"))
   , testCase "canonical precedence rendering" $ pretty (Binary Add (Lit 1) (Binary Multiply (Lit 2) (Lit 3))) @?= "1 + 2 * 3"
+  , testCase "render preserves right subtraction child" $ parseExpr (pretty (Binary Subtract (Lit 1) (Binary Subtract (Lit 2) (Lit 3)))) @?= Right (Binary Subtract (Lit 1) (Binary Subtract (Lit 2) (Lit 3)))
   , QC.testProperty "pretty/parse exact round trip" $ QC.forAll wellFormedExpr $ \expr -> parseExpr (pretty expr) == Right expr
   , QC.testProperty "addition model" $ \left right ->
       eval [] (Binary Add (Lit left) (Lit right)) == Right (left + right)

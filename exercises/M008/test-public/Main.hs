@@ -13,9 +13,12 @@ tests :: TestTree
 tests = testGroup "M008 public property quality"
   [ testCase "reverse laws accept reverse" $ assertBool "sound reverse rejected" (reverseInvolution reverse [1, 2, 3] && reverseAppendLaw reverse [1, 2] [3, 4])
   , testCase "involution kills identity reverse" $ assertBool "identity mutant survived" (not (reverseAppendLaw id [1] [2]))
+  , testCase "reverse laws kill tail-dropping reverse" $ assertBool "tail-drop mutant survived" (not (reverseInvolution tailDroppingReverse [1, 2, 3]))
   , testCase "sort laws accept sort" $ assertBool "sound sort rejected" (sortIdempotent sort [3, 1, 2] && sortOrdered sort [3, 1, 2] && sortPermutation sort [2, 1, 2])
   , testCase "ordered kills no-op sort" $ assertBool "no-op mutant survived" (not (sortOrdered id [2, 1]))
+  , testCase "ordered kills descending sort" $ assertBool "descending mutant survived" (not (sortOrdered descendingSort [1, 2, 3]))
   , testCase "permutation kills duplicate-dropping sort" $ assertBool "dedup mutant survived" (not (sortPermutation dedupSort [2, 1, 2]))
+  , testCase "permutation kills minimum-dropping sort" $ assertBool "drop-minimum mutant survived" (not (sortPermutation dropMinimumSort [-1, 0, 1]))
   , QC.testProperty "reverse involution accepts sound candidate" $ reverseInvolution reverse
   , QC.testProperty "reverse append law accepts sound candidate" $ reverseAppendLaw reverse
   , QC.testProperty "sort idempotence accepts sound candidate" $ sortIdempotent sort
@@ -25,6 +28,15 @@ tests = testGroup "M008 public property quality"
 
 dedupSort :: [Int] -> [Int]
 dedupSort = dedup . sort
+
+tailDroppingReverse :: [Int] -> [Int]
+tailDroppingReverse = reverse . drop 1
+
+descendingSort :: [Int] -> [Int]
+descendingSort = reverse . sort
+
+dropMinimumSort :: [Int] -> [Int]
+dropMinimumSort = drop 1 . sort
 
 dedup :: [Int] -> [Int]
 dedup [] = []

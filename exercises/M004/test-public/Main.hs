@@ -19,10 +19,12 @@ tests = testGroup "M004 public contract"
       mirror (mirror tree) == tree
   , QC.testProperty "mirror preserves metrics" $ QC.forAll treeGen $ \tree ->
       (size (mirror tree), height (mirror tree)) == (size tree, height tree)
+  , QC.testProperty "map identity preserves shape" $ QC.forAll treeGen $ \tree ->
+      mapTree id tree == tree
   , QC.testProperty "map composition" $ QC.forAll treeGen $ \tree ->
       mapTree (+ 1) (mapTree (* 2) tree) == mapTree ((+ 1) . (* 2)) tree
   , QC.testProperty "traversal cardinality" $ QC.forAll treeGen $ \tree ->
-      length (inorder tree) == size tree
+      length (inorder tree) == size tree && length (preorder tree) == size tree
   ]
 
 singleton :: Tree Int

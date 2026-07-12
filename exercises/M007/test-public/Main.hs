@@ -14,6 +14,7 @@ tests = testGroup "M007 public contract"
   , testCase "ordered combination" $ Summary 1 2 ["a"] <> Summary 1 3 ["b"] @?= Summary 2 5 ["a", "b"]
   , testCase "one entry" $ summarizeEntry "x" 7 @?= Summary 1 7 ["x"]
   , testCase "summarize preserves order" $ summarize [("b", 2), ("a", 3)] @?= Summary 2 5 ["b", "a"]
+  , testCase "summarize preserves duplicate labels" $ summarize [("x", 1), ("x", 2)] @?= Summary 2 3 ["x", "x"]
   , QC.testProperty "associativity" $ forSummary3 $ \a b c -> (a <> b) <> c == a <> (b <> c)
   , QC.testProperty "left identity" $ forSummary $ \a -> mempty <> a == a
   , QC.testProperty "right identity" $ forSummary $ \a -> a <> mempty == a
@@ -22,6 +23,8 @@ tests = testGroup "M007 public contract"
   , QC.testProperty "summarize count/labels invariant" $ \xs ->
       let result = summarize (xs :: [(String, Int)])
        in entryCount result == length (labelsInOrder result)
+  , QC.testProperty "summarize total is mathematical sum" $ \xs ->
+      valueTotal (summarize xs) == sum (map (fromIntegral . snd) (xs :: [(String, Int)]))
   ]
 
 forSummary :: (Summary -> Bool) -> QC.Property

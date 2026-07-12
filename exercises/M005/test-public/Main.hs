@@ -23,6 +23,12 @@ tests = testGroup "M005 public contract"
   , QC.testProperty "matching user head wins" $ \teamNumber ->
       let candidate = User u1 (Just (TeamId teamNumber))
        in findUser u1 (candidate : users) == Just candidate
+  , QC.testProperty "nonmatching team prefix is irrelevant" $ \raw ->
+      let fresh = TeamId (1000 + abs raw)
+       in findTeam t1 (Team fresh Nothing : teams) == findTeam t1 teams
+  , QC.testProperty "matching team head wins" $ \lead ->
+      let candidate = Team t1 lead
+       in findTeam t1 (candidate : teams) == Just candidate
   ]
 
 u1, u2, u3, u4, u5 :: UserId
