@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+set -u
+
+root=$(cd "$(dirname "$0")/../.." && pwd)
+cd "$root" || exit 2
+
+usage() {
+  echo "usage: apprentice {build|test ID|assess ID|bench ID|review ID|governance-audit|integrity}"
+}
+
+package_for() {
+  printf '%s' "$1" | tr '[:upper:]' '[:lower:]'
+}
+
+cmd=${1:-}
+case "$cmd" in
+  build)
+    exec cabal build all
+    ;;
+  test)
+    test -n "${2:-}" || { usage; exit 2; }
+    exec cabal test "$(package_for "$2")" --test-show-details=direct
+    ;;
+  bench)
+    test -n "${2:-}" || { usage; exit 2; }
+    exec cabal bench "$(package_for "$2")"
+    ;;
+  assess)
+    test -n "${2:-}" || { usage; exit 2; }
+    id=$2
+    pkg=$(package_for "$id")
+    cabal build "$pkg" || exit $?
+    cabal test "$pkg" --test-show-details=direct
+    test_status=$?
+    ./support/audit/no-solutions.sh "$id"
+    scan_status=$?
+    test "$test_status" -eq 0 -a "$scan_status" -eq 0
+    ;;
+  review)
+    test -n "${2:-}" || { usage; exit 2; }
+    echo "Run: codex \"Read prompts/learner/review-work.md and follow it for $2.\""
+    ;;
+  governance-audit)
+    exec ./support/audit/governance.sh
+    ;;
+  integrity)
+    exec ./support/audit/test-integrity.sh
+    ;;
+  *)
+    usage
+    exit 2
+    ;;
+esac

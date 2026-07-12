@@ -1,0 +1,13 @@
+# Agents in LEARNER_TUTOR mode must not edit these paths.
+exercises/M001/src/Apprentice/M001/Exercise.hs
+exercises/M002/src/Apprentice/M002/Exercise.hs
+exercises/M003/src/Apprentice/M003/Exercise.hs
+exercises/M004/src/Apprentice/M004/Exercise.hs
+exercises/M005/src/Apprentice/M005/Exercise.hs
+exercises/M006/src/Apprentice/M006/Exercise.hs
+exercises/M007/src/Apprentice/M007/Exercise.hs
+exercises/M008/src/Apprentice/M008/Exercise.hs
+boss-fights/B001-expression-language/src/Apprentice/B001/Syntax.hs
+boss-fights/B001-expression-language/src/Apprentice/B001/Parser.hs
+boss-fights/B001-expression-language/src/Apprentice/B001/Eval.hs
+boss-fights/B001-expression-language/src/Apprentice/B001/Pretty.hs

@@ -1,0 +1,8 @@
+dist-newstyle/
+.ghc.environment.*
+*.eventlog
+*.hp
+*.prof
+*.tix
+.curriculum-author-mode
+assessment-reports/local/

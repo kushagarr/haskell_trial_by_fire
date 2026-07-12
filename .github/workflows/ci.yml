@@ -1,0 +1,22 @@
+name: public-integrity
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  governance-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: haskell-actions/setup@v2
+        with:
+          ghc-version: '9.10'
+          cabal-version: '3.12'
+      - run: ./support/bin/apprentice governance-audit
+      - run: cabal update
+      - run: cabal build all
+      - name: Public tests document learner obligations
+        run: |
+          echo "Public tests are run by module assessment after learner implementation."
+          echo "Private CI separately protects approved suites and runs hidden categories."

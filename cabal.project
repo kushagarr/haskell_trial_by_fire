@@ -1,0 +1,77 @@
+packages:
+  exercises/M001
+  exercises/M002
+  exercises/M003
+  exercises/M004
+  exercises/M005
+  exercises/M006
+  exercises/M007
+  exercises/M008
+  boss-fights/B001-expression-language
+
+tests: True
+benchmarks: False
+write-ghc-environment-files: never
+
+package m001
+  ghc-options:
+    -Wall -Wcompat -Widentities -Wincomplete-patterns
+    -Wincomplete-record-updates -Wincomplete-uni-patterns
+    -Wmissing-export-lists -Wmissing-signatures
+    -Wredundant-constraints -Werror
+
+package m002
+  ghc-options:
+    -Wall -Wcompat -Widentities -Wincomplete-patterns
+    -Wincomplete-record-updates -Wincomplete-uni-patterns
+    -Wmissing-export-lists -Wmissing-signatures
+    -Wredundant-constraints -Werror
+
+package m003
+  ghc-options:
+    -Wall -Wcompat -Widentities -Wincomplete-patterns
+    -Wincomplete-record-updates -Wincomplete-uni-patterns
+    -Wmissing-export-lists -Wmissing-signatures
+    -Wredundant-constraints -Werror
+
+package m004
+  ghc-options:
+    -Wall -Wcompat -Widentities -Wincomplete-patterns
+    -Wincomplete-record-updates -Wincomplete-uni-patterns
+    -Wmissing-export-lists -Wmissing-signatures
+    -Wredundant-constraints -Werror
+
+package m005
+  ghc-options:
+    -Wall -Wcompat -Widentities -Wincomplete-patterns
+    -Wincomplete-record-updates -Wincomplete-uni-patterns
+    -Wmissing-export-lists -Wmissing-signatures
+    -Wredundant-constraints -Werror
+
+package m006
+  ghc-options:
+    -Wall -Wcompat -Widentities -Wincomplete-patterns
+    -Wincomplete-record-updates -Wincomplete-uni-patterns
+    -Wmissing-export-lists -Wmissing-signatures
+    -Wredundant-constraints -Werror
+
+package m007
+  ghc-options:
+    -Wall -Wcompat -Widentities -Wincomplete-patterns
+    -Wincomplete-record-updates -Wincomplete-uni-patterns
+    -Wmissing-export-lists -Wmissing-signatures
+    -Wredundant-constraints -Werror
+
+package m008
+  ghc-options:
+    -Wall -Wcompat -Widentities -Wincomplete-patterns
+    -Wincomplete-record-updates -Wincomplete-uni-patterns
+    -Wmissing-export-lists -Wmissing-signatures
+    -Wredundant-constraints -Werror
+
+package b001-expression-language
+  ghc-options:
+    -Wall -Wcompat -Widentities -Wincomplete-patterns
+    -Wincomplete-record-updates -Wincomplete-uni-patterns
+    -Wmissing-export-lists -Wmissing-signatures
+    -Wredundant-constraints -Werror

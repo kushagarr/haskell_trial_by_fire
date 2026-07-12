@@ -1,0 +1,23 @@
+module: B001
+version: 0.9
+status: AUDITED_READY
+minimum_tier: Gold
+learner_owned:
+  - src/Apprentice/B001/Syntax.hs
+  - src/Apprentice/B001/Parser.hs
+  - src/Apprentice/B001/Eval.hs
+  - src/Apprentice/B001/Pretty.hs
+gates:
+  design: required
+  compilation: required
+  public_examples: required
+  public_properties: required
+  adversarial_private: required
+  totality_forbidden_apis: required
+  mutation: required
+  performance: required
+  memory_strictness: required
+  architecture_change: source_spans
+  oral_defense: required
+  hidden_integration: required
+private_material_location: external_only

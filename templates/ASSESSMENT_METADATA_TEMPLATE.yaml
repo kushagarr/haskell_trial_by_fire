@@ -1,0 +1,19 @@
+module: M___
+version: 0.1
+status: DRAFT
+minimum_tier: Gold
+learner_owned:
+  - src/Apprentice/M___/Exercise.hs
+gates:
+  design: required
+  compilation: required
+  public_examples: required
+  public_properties: required
+  adversarial_private: required
+  totality_forbidden_apis: required
+  mutation: required
+  performance: as_documented
+  memory_strictness: as_documented
+  architecture_change: required
+  oral_defense: required
+private_material_location: external_only

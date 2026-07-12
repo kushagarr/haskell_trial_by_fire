@@ -1,0 +1,25 @@
+module: M001
+version: 1.0
+status: FROZEN_FOR_ATTEMPT
+minimum_tier: Gold
+learner_owned:
+  - src/Apprentice/M001/Exercise.hs
+gates:
+  design: required
+  compilation: required
+  public_examples: required
+  public_properties: required
+  adversarial_private: required
+  totality_forbidden_apis: required
+  mutation: required
+  performance: required
+  memory_strictness: required
+  architecture_change: oral_design
+  oral_defense: required
+forbidden_source_tokens:
+  - undefined
+  - unsafePerformIO
+  - head
+  - tail
+  - fromJust
+private_material_location: external_only

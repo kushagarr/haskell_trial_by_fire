@@ -1,0 +1,7 @@
+module: M003
+version: 0.9
+status: AUDITED_READY
+minimum_tier: Gold
+learner_owned: [src/Apprentice/M003/Exercise.hs]
+gates: {design: required, compilation: required, public_examples: required, public_properties: required, adversarial_private: required, totality_forbidden_apis: required, mutation: required, performance: required, memory_strictness: required, oral_defense: required}
+private_material_location: external_only

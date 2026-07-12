@@ -1,0 +1,6 @@
+- arguments: [-XNoImplicitPrelude]
+- ignore: {name: "Use foldr"}
+- ignore: {name: "Use map"}
+- ignore: {name: "Use maybe"}
+- ignore: {name: "Use either"}
+# Some exercises deliberately require direct recursion before these abstractions.
