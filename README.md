@@ -12,8 +12,9 @@ Read AGENTS.md first. It is authoritative over every prompt and workflow.
 
 ## Current state
 
-- Active trial: M001
+- Active trial: M002
 - Active status: FROZEN_FOR_ATTEMPT, version 1.0
+- Completed: M001 Gold at commit 96c3bf8
 - Fully authored learning block: M001 through M008
 - Fully authored cumulative challenge: B001 Expression Language
 - Later curriculum: roadmap-level only

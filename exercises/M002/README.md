@@ -1,8 +1,8 @@
 # M002 — Custom Recursive Lists
 
-MODULE_STATUS: AUDITED_READY
-MODULE_VERSION: 0.9
-FROZEN_AT: N/A
+MODULE_STATUS: FROZEN_FOR_ATTEMPT
+MODULE_VERSION: 1.0
+FROZEN_AT: 2026-07-12
 
 ## Purpose, prerequisites, capability
 

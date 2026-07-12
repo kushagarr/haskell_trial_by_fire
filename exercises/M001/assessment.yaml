@@ -1,6 +1,6 @@
 module: M001
 version: 1.0
-status: FROZEN_FOR_ATTEMPT
+status: RETIRED
 minimum_tier: Gold
 learner_owned:
   - src/Apprentice/M001/Exercise.hs
