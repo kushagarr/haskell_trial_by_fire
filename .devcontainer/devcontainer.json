@@ -1,0 +1,20 @@
+{
+    "name" : "Trial by Fire Devcontainer",
+    "dockerComposeFile" : [
+        "docker-compose.yml"
+    ],
+
+    "service": "trial_by_fire",
+    "workspaceFolder": "/trial_by_fire",
+
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-azuretools.vscode-docker",
+                "haskell.haskell",
+                "visortelle.haskell-spotlight",
+                "openai.chatgpt"
+            ]
+        }
+    }
+}
