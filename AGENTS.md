@@ -77,6 +77,7 @@ Do not bundle several ladder levels into one answer. A counterexample request pe
 - Keep exactly one active module frozen for a learner attempt unless a documented transition is in progress.
 - Design later blocks shortly before use from learner evidence: assessments, journal, weaknesses, hints, benchmarks, explanations, and boss outcomes.
 - Important concepts recur in at least three contexts: direct form, abstraction/refactor, and later independent transfer.
+- Every generated or refreshed module, boss fight, and private-CI package must satisfy `docs/governance/MODULE_GENERATION_STANDARD.md`; every Gate 0 scaffold must satisfy `docs/governance/DESIGN_QUESTIONS.md`.
 - Never lower standards merely because the learner struggles. Adapt ordering, drills, hint pacing, and recurrence.
 - Reduce the number of modules before reducing rigor.
 
@@ -93,3 +94,13 @@ Do not reinterpret trial by fire as more unit tests; advanced Haskell as a gloss
 ## Session discipline
 
 At session start, identify mode, active module, its status/version, learner-owned paths, and requested hint level. In tutor mode, inspect before advising and never edit learner source. In author mode, review progress evidence and the lifecycle before changing future curriculum. At session end, report evidence, unresolved gates, hints given, and any progress files that should be updated.
+
+When the learner asks “what next?”, “should I commit?”, or equivalent, follow `prompts/learner/next-step.md` without requiring them to name it. Always give one evidence-based next action and an explicit commit disposition: `WAIT`, `COMMIT CANDIDATE NOW`, `KEEP CANDIDATE IMMUTABLE`, or `COMMIT EVIDENCE SEPARATELY`. Do not leave commit timing implicit and do not create a commit unless the user explicitly asks.
+
+Before recommending implementation, review, a candidate commit, or assessment, run `./support/bin/apprentice design-status` and respect each question's declared stage. Any unanswered `BEFORE CODE` question is the next gate even if implementation already exists or tests pass. If code predates those answers because the curriculum or tutor allowed work out of sequence, tell the learner to pause code changes and answer honestly as post-implementation reconstruction. Do not delete working code, pretend the answer preceded implementation, or penalize the learner for the sequencing defect. Record the timing limitation and confirm the reasoning during oral evidence.
+
+A learner statement that they are ready for assessment, want to complete the active module, or want certification is the semantic trigger to follow `prompts/learner/assess-module.md`; the learner need not name that prompt or the private command. Readiness is also established when tutor review finds the design/reflection complete, the learner implementation free of incomplete-attempt markers, all declared public gates passing, and no unresolved implementation task. In that case continue to assessment automatically. Confirm the sole frozen module, then run its complete executable assessment through `./support/bin/apprentice assess` before deciding certification. One narrow passing check during ordinary tutoring is not readiness.
+
+The apprentice command is the only learner-session bridge to private evaluation. Invoke it and consume category-level output, but do not locate, open, search, or quote private assessment files. A required mutation gate passes only when the bridge explicitly reports every declared `MU-N KILLED PT-N` attestation and `MUTATION-GATE PASS`; mutation lines attest version-matched assessor calibration, not mutations of learner code. If the bridge is unavailable or any required private category or mutation attestation is absent, record that gate as NOT RUN and do not certify the module.
+
+Final private assessment and certification must bind to an immutable learner-candidate commit. Tell the learner to create that scoped commit only after design/reflection and declared public gates pass and incomplete-attempt markers are gone. Once assessment begins, do not amend the candidate; any learner-code change requires a new commit and rerun of affected evidence. Assessment reports, progress updates, and next-module activation belong in a later evidence/progression commit, not the learner-candidate commit.

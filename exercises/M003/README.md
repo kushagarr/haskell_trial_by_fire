@@ -1,7 +1,7 @@
 # M003 — Folds, Evaluation, and Large Inputs
 
 MODULE_STATUS: AUDITED_READY
-MODULE_VERSION: 0.9
+MODULE_VERSION: 0.9.1
 FROZEN_AT: N/A
 
 ## Purpose and prerequisites

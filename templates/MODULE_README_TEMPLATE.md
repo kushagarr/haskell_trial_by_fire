@@ -36,6 +36,8 @@ Use stable FS IDs and explain pedagogical reason.
 
 ## Reflection and oral questions
 
+Map every gating reasoning obligation to stable DQ IDs in DESIGN.md and distinguish before-code questions from before-assessment reflection.
+
 ## Further challenge (non-gating)
 
 ## Future revisit

@@ -1,7 +1,7 @@
 # M008 — Properties That Kill Plausible Bugs
 
 MODULE_STATUS: AUDITED_READY
-MODULE_VERSION: 0.9
+MODULE_VERSION: 0.9.1
 FROZEN_AT: N/A
 
 ## Purpose and prerequisites

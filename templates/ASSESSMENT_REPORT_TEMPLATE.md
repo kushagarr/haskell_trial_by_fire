@@ -2,6 +2,8 @@
 
 Module/version/commit/toolchain/date:
 
+Design timing: completed before implementation / reconstructed after implementation (reason and oral-confirmation requirement)
+
 | Gate | Result | Evidence | Limitations/required work |
 |---|---|---|---|
 
@@ -20,5 +22,7 @@ Module/version/commit/toolchain/date:
 ## Evidence-backed weaknesses
 
 ## Certification and required work
+
+Candidate commit disposition: WAIT / COMMIT CANDIDATE NOW / KEEP CANDIDATE IMMUTABLE / COMMIT EVIDENCE SEPARATELY
 
 Never collapse this report to one score.

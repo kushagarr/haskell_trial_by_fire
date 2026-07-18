@@ -1,14 +1,31 @@
-# Design Notes: M___
+# Design Notes — M___
 
 LEARNER_OWNED: yes
 
-Before implementation answer:
+Follow `docs/governance/DESIGN_QUESTIONS.md`. Answer in your own words without implementation code. Keep each answer under its question.
 
-1. What invariants must hold and where are they established?
-2. Why do the chosen types fit the domain?
-3. Where can partiality arise and how is it represented?
-4. What operations dominate runtime and allocation?
-5. What are the expected time and space classes?
-6. Which behavior depends on laziness, strictness, or evaluation demand?
-7. How will public examples, laws, edges, scale, and failure be tested?
-8. What weaker design is tempting, and what counterexample defeats it?
+## Before code
+
+### DQ-1 — Short concern name
+
+- Stage: `BEFORE CODE`
+- Scope: function/type/component
+- Maps to: requirement/invariant IDs; Gate 0
+- Answer shape: short argument/table/trace/counterexample
+
+Question stated as one primary reasoning task?
+
+Your answer:
+
+## Before assessment
+
+### DQ-N — Short concern name
+
+- Stage: `BEFORE ASSESSMENT`
+- Scope: function/type/component or cross-cutting concern
+- Maps to: requirement/invariant IDs; Gate 0 / OR / named MR
+- Answer shape: proof sketch/causal explanation/tradeoff/counterexample
+
+Question stated as one primary reasoning task?
+
+Your answer:

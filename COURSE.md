@@ -23,12 +23,14 @@ The detailed lifecycle is in docs/governance/AUTHORING_LIFECYCLE.md.
 ## Learner workflow
 
 1. Invoke prompts/learner/start-session.md.
-2. Read the active module README and write DESIGN.md answers before code where Gate 0 applies.
+2. Read the active module README, run `./support/bin/apprentice design-status`, and write each `BEFORE CODE` DESIGN answer before implementation where Gate 0 applies. The tutor must not recommend implementation while that stage is incomplete.
 3. Implement only in the declared learner-owned source paths.
 4. Use public examples and tests as contract evidence, not a specification substitute.
 5. Request hints by level; the tutor does not edit implementation files.
-6. Run assessment gates and complete reflection/oral defense.
-7. Record evidence and schedule revisits.
+6. After design/reflection and all declared public gates pass, create a scoped learner-candidate commit containing learner work but no progress, governance, private, generated, or build material.
+7. Keep that candidate immutable while private, performance/manual, and oral gates run. Any learner-code change requires a new candidate and affected evidence rerun.
+8. Record certification evidence against the candidate hash, then commit reports/progress and any next-module activation separately.
+9. Schedule revisits.
 
 ## Certification
 

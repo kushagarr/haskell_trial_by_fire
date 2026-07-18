@@ -5,11 +5,216 @@ root=$(cd "$(dirname "$0")/../.." && pwd)
 cd "$root" || exit 2
 
 usage() {
-  echo "usage: apprentice {build|test ID|assess ID|bench ID|review ID|governance-audit|integrity}"
+  echo "usage: apprentice {build|test ID|design-status [ID]|assess [ID]|bench ID|review ID|governance-audit|integrity}"
 }
 
 package_for() {
   printf '%s' "$1" | tr '[:upper:]' '[:lower:]'
+}
+
+active_module() {
+  local active_file=
+  local count=0
+  local file
+  local id
+
+  while IFS= read -r file; do
+    test -n "$file" || continue
+    active_file=$file
+    count=$((count + 1))
+  done < <(rg -l '^status: FROZEN_FOR_ATTEMPT$' exercises boss-fights --glob assessment.yaml 2>/dev/null | sort)
+
+  if test "$count" -ne 1; then
+    echo "assessment BLOCKED: expected exactly one frozen module, found $count" >&2
+    return 2
+  fi
+
+  id=$(sed -n 's/^module:[[:space:]]*//p' "$active_file")
+  case "$id" in
+    M[0-9][0-9][0-9]|B[0-9][0-9][0-9]) printf '%s\n' "$id" ;;
+    *)
+      echo "assessment BLOCKED: invalid module identifier in $active_file" >&2
+      return 2
+      ;;
+  esac
+}
+
+design_status() {
+  local id=$1
+  local assessment_files
+  local assessment_count
+  local design
+
+  case "$id" in
+    M[0-9][0-9][0-9]|B[0-9][0-9][0-9]) ;;
+    *)
+      echo "DESIGN-STATUS BLOCKED: invalid module identifier $id" >&2
+      return 2
+      ;;
+  esac
+
+  assessment_files=$(rg -l "^module:[[:space:]]*$id$" exercises boss-fights --glob assessment.yaml 2>/dev/null || true)
+  assessment_count=$(printf '%s\n' "$assessment_files" | awk 'NF {count++} END {print count+0}')
+  if test "$assessment_count" -ne 1; then
+    echo "DESIGN-STATUS BLOCKED: expected one assessment metadata file for $id" >&2
+    return 2
+  fi
+
+  design="$(dirname "$assessment_files")/DESIGN.md"
+  if ! test -f "$design"; then
+    echo "DESIGN-STATUS BLOCKED: DESIGN.md unavailable for $id" >&2
+    return 2
+  fi
+
+  awk '
+    function emit() {
+      if (question == "") return
+      result = answered ? "ANSWERED" : "UNANSWERED"
+      print question, stage, result
+      total++
+      if (!answered) {
+        missing++
+        if (stage == "BEFORE CODE") before_code++
+        if (stage == "BEFORE ASSESSMENT") before_assessment++
+      }
+    }
+    /^### DQ-[0-9]+ — / {
+      emit()
+      question = $2
+      stage = "UNSTAGED"
+      answered = 0
+      in_answer = 0
+      next
+    }
+    /^## / {
+      emit()
+      question = ""
+      in_answer = 0
+      next
+    }
+    question != "" && /^- Stage: `/ {
+      stage = $0
+      sub(/^- Stage: `/, "", stage)
+      sub(/`$/, "", stage)
+      next
+    }
+    question != "" && /^Your answer:$/ {
+      in_answer = 1
+      next
+    }
+    in_answer && $0 !~ /^[[:space:]]*$/ && $0 !~ /^[[:space:]]*(TODO|TBD|N\/A)[[:space:]]*$/ {
+      answered = 1
+    }
+    END {
+      emit()
+      if (total == 0) {
+        print "DESIGN-STATUS BLOCKED: no structured design questions"
+        exit 2
+      }
+      if (missing > 0) {
+        print "DESIGN-STATUS INCOMPLETE before_code=" before_code+0 " before_assessment=" before_assessment+0
+        exit 1
+      }
+      print "DESIGN-STATUS COMPLETE questions=" total
+    }
+  ' "$design"
+}
+
+assess() {
+  local id=$1
+  local pkg
+  local public_status=0
+  local private_assessor
+  local candidate
+  local private_output
+  local private_status
+  local assessment_files
+  local assessment_count
+  local assessment_file
+  local mutation_plan
+  local declared_mutants
+  local declared_count
+  local reported_count
+  local mutant
+
+  case "$id" in
+    M[0-9][0-9][0-9]|B[0-9][0-9][0-9]) ;;
+    *)
+      echo "assessment BLOCKED: invalid module identifier $id" >&2
+      return 2
+      ;;
+  esac
+
+  if ! design_status "$id"; then
+    echo "ASSESSMENT NOT-RUN: required design questions are incomplete" >&2
+    return 2
+  fi
+
+  pkg=$(package_for "$id")
+  cabal build "$pkg" || return $?
+  cabal test "$pkg" --test-show-details=direct || public_status=1
+  ./support/audit/no-solutions.sh "$id" || public_status=1
+  if test "$public_status" -ne 0; then
+    echo "PRIVATE-ASSESSMENT NOT-RUN: public executable gates failed" >&2
+    return 1
+  fi
+
+  private_assessor=${TBF_PRIVATE_ASSESSOR:-}
+  if test -z "$private_assessor"; then
+    for candidate in \
+      "$root/../trial_by_fire_private/bin/assess" \
+      /progs/haskell/trial_by_fire_private/bin/assess
+    do
+      if test -x "$candidate"; then
+        private_assessor=$candidate
+        break
+      fi
+    done
+  fi
+  if ! test -x "$private_assessor"; then
+    echo "PRIVATE-ASSESSMENT NOT-RUN: configured assessor is unavailable" >&2
+    return 2
+  fi
+
+  private_output=$("$private_assessor" "$id" "$root" 2>&1)
+  private_status=$?
+  printf '%s\n' "$private_output"
+  if test "$private_status" -ne 0; then
+    return "$private_status"
+  fi
+
+  assessment_files=$(rg -l "^module:[[:space:]]*$id$" exercises boss-fights --glob assessment.yaml 2>/dev/null || true)
+  assessment_count=$(printf '%s\n' "$assessment_files" | awk 'NF {count++} END {print count+0}')
+  if test "$assessment_count" -ne 1; then
+    echo "MUTATION-GATE NOT-RUN: public assessment metadata unavailable" >&2
+    return 2
+  fi
+  assessment_file=$assessment_files
+  if rg -q 'mutation:[[:space:]]*(required|central)' "$assessment_file"; then
+    mutation_plan="$(dirname "$assessment_file")/MUTATION_PLAN.md"
+    if ! test -f "$mutation_plan"; then
+      echo "MUTATION-GATE NOT-RUN: public mutation plan unavailable" >&2
+      return 2
+    fi
+    declared_mutants=$(rg -o 'MU-[0-9]+' "$mutation_plan" | sort -V -u)
+    declared_count=$(printf '%s\n' "$declared_mutants" | awk 'NF {count++} END {print count+0}')
+    reported_count=$(printf '%s\n' "$private_output" | rg -c '^MU-[0-9]+ KILLED PT-[A-Z0-9-]+$' || true)
+    reported_count=${reported_count:-0}
+    if test "$declared_count" -eq 0 || test "$declared_count" -ne "$reported_count"; then
+      echo "MUTATION-GATE NOT-RUN: explicit mutant attestations are incomplete" >&2
+      return 2
+    fi
+    for mutant in $declared_mutants; do
+      if ! printf '%s\n' "$private_output" | rg -q "^$mutant KILLED PT-[A-Z0-9-]+$"; then
+        echo "MUTATION-GATE NOT-RUN: explicit mutant attestations are incomplete" >&2
+        return 2
+      fi
+    done
+    if ! printf '%s\n' "$private_output" | rg -q '^MUTATION-GATE PASS$'; then
+      echo "MUTATION-GATE NOT-RUN: trusted pass attestation is missing" >&2
+      return 2
+    fi
+  fi
 }
 
 cmd=${1:-}
@@ -21,20 +226,25 @@ case "$cmd" in
     test -n "${2:-}" || { usage; exit 2; }
     exec cabal test "$(package_for "$2")" --test-show-details=direct
     ;;
+  design-status)
+    if test -n "${2:-}"; then
+      id=$(printf '%s' "$2" | tr '[:lower:]' '[:upper:]')
+    else
+      id=$(active_module) || exit $?
+    fi
+    design_status "$id"
+    ;;
   bench)
     test -n "${2:-}" || { usage; exit 2; }
     exec cabal bench "$(package_for "$2")"
     ;;
   assess)
-    test -n "${2:-}" || { usage; exit 2; }
-    id=$2
-    pkg=$(package_for "$id")
-    cabal build "$pkg" || exit $?
-    cabal test "$pkg" --test-show-details=direct
-    test_status=$?
-    ./support/audit/no-solutions.sh "$id"
-    scan_status=$?
-    test "$test_status" -eq 0 -a "$scan_status" -eq 0
+    if test -n "${2:-}"; then
+      id=$(printf '%s' "$2" | tr '[:lower:]' '[:upper:]')
+    else
+      id=$(active_module) || exit $?
+    fi
+    assess "$id"
     ;;
   review)
     test -n "${2:-}" || { usage; exit 2; }

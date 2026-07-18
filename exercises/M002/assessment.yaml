@@ -1,5 +1,5 @@
 module: M002
-version: 1.0
+version: 1.0.1
 status: FROZEN_FOR_ATTEMPT
 minimum_tier: Gold
 learner_owned:

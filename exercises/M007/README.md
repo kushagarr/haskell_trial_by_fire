@@ -1,7 +1,7 @@
 # M007 — Semigroups, Monoids, and Laws
 
 MODULE_STATUS: AUDITED_READY
-MODULE_VERSION: 0.9
+MODULE_VERSION: 0.9.1
 FROZEN_AT: N/A
 
 ## Purpose and prerequisites

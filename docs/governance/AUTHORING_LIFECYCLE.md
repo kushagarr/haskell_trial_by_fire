@@ -18,11 +18,11 @@ Record each accepted, rejected, or deferred finding and why. Recheck block depen
 
 ## 5. Implementation
 
-Create exact contracts, stubs, public tests/properties, visible private category plans, metadata, realistic mutants, performance/memory plans, reflection, changelog, and revisit plan. Never create visible solutions.
+Create exact contracts, structured design questions, stubs, public tests/properties, visible private category plans, metadata, realistic mutants, performance/memory plans, reflection, changelog, and revisit plan. Follow `DESIGN_QUESTIONS.md` and `MODULE_GENERATION_STANDARD.md`. Never create visible solutions.
 
 ## 6. Pre-attempt audit
 
-Map every behavior, invariant, edge, law, complexity/memory/strictness/totality requirement, forbidden shortcut, and extensibility requirement to meaningful assessment paths. “Manual review” must name what evidence the reviewer seeks. Repair unexplained gaps.
+Map every behavior, invariant, edge, law, complexity/memory/strictness/totality requirement, forbidden shortcut, design question, and extensibility requirement to meaningful assessment paths. Verify DQ structure/answerability/leakage and public/private generation conformance. “Manual review” must name what evidence the reviewer seeks. Repair unexplained gaps.
 
 ## 7. Readiness and freeze
 

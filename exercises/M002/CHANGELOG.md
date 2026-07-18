@@ -1,5 +1,13 @@
 # Module Change Log — M002
 
+## 1.0.1 — 2026-07-14
+
+- Clarified the Gate 0 scaffold after the original single compound sentence proved materially ambiguous about question boundaries, function scope, answer timing, and evidence mapping.
+- Split the existing obligations into stable DQ-1..12 sections with `BEFORE CODE`/`BEFORE ASSESSMENT` stages, named function scope, public requirement/gate mappings, bounded answer shapes, and answer areas.
+- Preserved every 1.0 requirement, API, public/private test, threshold, and expected reasoning claim; added no solution steps or hidden information.
+- Learner impact: `DESIGN.md` contained no learner answers before repair and learner implementation source was not edited. Executable evidence remains comparable, but final certification must use the 1.0.1 candidate commit and matching private attestation.
+- Transition handling: because the earlier workflow allowed implementation before enforcing Gate 0, current `BEFORE CODE` answers are labeled post-implementation reconstruction, working code is preserved, and understanding is confirmed orally without learner penalty.
+
 ## 1.0 — 2026-07-12
 
 - Reconciled the public plan and suite by adding explicit append identity, map identity, reverse-length, take-length, singleton, and zero-demand evidence before freeze.

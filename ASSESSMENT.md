@@ -10,7 +10,7 @@ Assessment is a matrix of evidence, not a score or a test command. Each module s
 3. Public properties: laws, round trips, preservation, or model agreement.
 4. Adversarial/private categories: documented edges and malformed/large/deep inputs.
 5. Totality and forbidden APIs: source scan plus review, scoped per module.
-6. Mutation: realistic faults, with quality judged by relevance rather than score vanity.
+6. Mutation: realistic faults, with quality judged by relevance rather than score vanity. This gate calibrates the assessment paths against deliberately faulty reference candidates; it does not mutate each learner submission. Certification requires an explicit trusted, contract/toolchain-matched attestation for every declared mutant rather than inference from PT results.
 7. Complexity: scaling ratios, operation counters, and deliberately weak baselines.
 8. Memory/strictness: allocation growth, residency, stack behavior, retention, and productivity.
 9. Streaming: chunk boundaries, bounded memory, cancellation, partial final chunks, and cleanup where applicable.

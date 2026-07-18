@@ -17,6 +17,8 @@ done
 ./support/audit/no-solutions.sh || status=1
 ./support/audit/roadmap-depth.sh || status=1
 ./support/audit/test-integrity.sh || status=1
+./support/audit/private-assessment-wiring.sh || status=1
+./support/audit/module-generation.sh || status=1
 
 frozen=$(rg -l '^MODULE_STATUS: FROZEN_FOR_ATTEMPT$' exercises boss-fights 2>/dev/null | wc -l | tr -d ' ')
 if test "$frozen" != 1; then

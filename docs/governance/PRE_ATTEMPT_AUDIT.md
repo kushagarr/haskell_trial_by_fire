@@ -16,9 +16,9 @@ A module is not ready to freeze until every meaningful requirement has an assess
 
 ## Evidence path vocabulary
 
-PE public example; UT public unit test; PP public property; PT documented private category; MU realistic mutant; PF scaling/operation performance; MM allocation/residency/stack check; OR oral question; MR named manual review.
+DQ structured design question; PE public example; UT public unit test; PP public property; PT documented private category; MU realistic mutant; PF scaling/operation performance; MM allocation/residency/stack check; OR oral question; MR named manual review.
 
-Every row names a requirement identifier, source clause, evidence paths, adequacy argument, and any limitation. Multiple independent paths are expected for high-risk claims. A private category cannot rescue an undocumented requirement. A timeout alone cannot establish a complexity or memory class.
+Every row names a requirement identifier, source clause, applicable DQ IDs, evidence paths, adequacy argument, and any limitation. Multiple independent paths are expected for high-risk claims. A private category cannot rescue an undocumented requirement. A timeout alone cannot establish a complexity or memory class. Gate 0 fails if questions are bundled, unmapped, answer-leaking, or unclear about scope/stage.
 
 ## Freeze decision
 

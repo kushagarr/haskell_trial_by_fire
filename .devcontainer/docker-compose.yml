@@ -16,4 +16,11 @@ services:
     environment:
       DOCKER_HOST: unix:///var/run/docker.sock
 
+    # Bubblewrap needs to create and manage nested namespaces in this
+    # development container. Keep this narrower than privileged: true.
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - seccomp=unconfined
+
     command: /bin/sh -c "while sleep 1000; do :; done"
